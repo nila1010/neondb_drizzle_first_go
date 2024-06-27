@@ -4,16 +4,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { db } from "@/db/db";
-import { userTable } from "@/db/schema";
 
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-  async function loginHandler(formData: FormData) {
+  async function signUpHandler(formData: FormData) {
     "use server";
 
-    const returnUserId = await addUser(formData.get("username") as string, formData.get("password") as string);
+    const returnUserId = await addUser(formData.get("usernamecreate") as string, formData.get("passwordcreate") as string);
     redirect(`/todolist?username=${returnUserId}`);
   }
 
@@ -26,62 +24,64 @@ export default async function Home() {
         <TabsTrigger value="create">Create account</TabsTrigger>
       </TabsList>
       <TabsContent value="login">
-        <form action={loginHandler}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Login</CardTitle>
-              <CardDescription>Login to access your todo-list</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                  id="username"
-                  type="text"
-                  name="username"
-                />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  name="password"
-                />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button>Login</Button>
-            </CardFooter>
-          </Card>
-        </form>
-      </TabsContent>
-      <TabsContent value="create">
         <Card>
           <CardHeader>
-            <CardTitle>Create account</CardTitle>
-            <CardDescription>Create account to make a todo-list</CardDescription>
+            <CardTitle>Login</CardTitle>
+            <CardDescription>Login to access your todo-list</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="space-y-1">
-              <Label htmlFor="usernamecreate">Username</Label>
+              <Label htmlFor="username">Username</Label>
               <Input
-                id="usernamecreate"
+                id="username"
                 type="text"
+                name="username"
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="passwordcreate">Password</Label>
+              <Label htmlFor="password">Password</Label>
               <Input
-                id="passwordcreate"
+                id="password"
                 type="password"
+                name="password"
               />
             </div>
           </CardContent>
           <CardFooter>
-            <Button>Create account</Button>
+            <Button>Login</Button>
           </CardFooter>
         </Card>
+      </TabsContent>
+      <TabsContent value="create">
+        <form action={signUpHandler}>
+          <Card>
+            <CardHeader>
+              <CardTitle>Create account</CardTitle>
+              <CardDescription>Create account to make a todo-list</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label htmlFor="usernamecreate">Username</Label>
+                <Input
+                  id="usernamecreate"
+                  type="text"
+                  name="usernamecreate"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="passwordcreate">Password</Label>
+                <Input
+                  id="passwordcreate"
+                  type="password"
+                  name="passwordcreate"
+                />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button>Create account</Button>
+            </CardFooter>
+          </Card>
+        </form>
       </TabsContent>
     </Tabs>
   );
